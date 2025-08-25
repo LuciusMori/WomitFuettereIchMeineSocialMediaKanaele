@@ -67,7 +67,7 @@ export async function loader(args: Route.LoaderArgs) {
           return null;
         })
       : Promise.resolve(null),
-    convex.action(api.subscriptions.getAvailablePlans),
+    convex.action(api.subscriptions.getAvailablePlans, {}),
   ]);
 
   return {
