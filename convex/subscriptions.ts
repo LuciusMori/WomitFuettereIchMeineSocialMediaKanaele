@@ -80,34 +80,43 @@ export const getAvailablePlans = action({
       };
     }
 
-    const polar = new Polar({
-      server: (process.env.POLAR_SERVER as "sandbox" | "production") || "sandbox",
-      accessToken: process.env.POLAR_ACCESS_TOKEN,
-    });
+    try {
+      const polar = new Polar({
+        server: (process.env.POLAR_SERVER as "sandbox" | "production") || "sandbox",
+        accessToken: process.env.POLAR_ACCESS_TOKEN,
+      });
 
-    const { result } = await polar.products.list({
-      organizationId: process.env.POLAR_ORGANIZATION_ID,
-      isArchived: false,
-    });
+      const { result } = await polar.products.list({
+        organizationId: process.env.POLAR_ORGANIZATION_ID,
+        isArchived: false,
+      });
 
-    // Transform the data to remove Date objects and keep only needed fields
-    const cleanedItems = result.items.map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      isRecurring: item.isRecurring,
-      prices: item.prices.map((price: any) => ({
-        id: price.id,
-        amount: price.priceAmount,
-        currency: price.priceCurrency,
-        interval: price.recurringInterval,
-      })),
-    }));
+      // Transform the data to remove Date objects and keep only needed fields
+      const cleanedItems = result.items.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        isRecurring: item.isRecurring,
+        prices: item.prices.map((price: any) => ({
+          id: price.id,
+          amount: price.priceAmount,
+          currency: price.priceCurrency,
+          interval: price.recurringInterval,
+        })),
+      }));
 
-    return {
-      items: cleanedItems,
-      pagination: result.pagination,
-    };
+      return {
+        items: cleanedItems,
+        pagination: result.pagination,
+      };
+    } catch (error) {
+      console.error("Polar API error:", error);
+      // Return empty plans on API error to prevent app crash
+      return {
+        items: [],
+        pagination: { total_count: 0, has_more: false },
+      };
+    }
   },
 });
 
