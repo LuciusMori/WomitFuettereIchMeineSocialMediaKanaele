@@ -187,24 +187,24 @@ function FeaturesSection() {
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
             <div className="flex items-start">
-              <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-indigo-600 text-white flex items-center justify-center">✓</div>
+              <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-indigo-600 text-white flex items-center justify-center">📝</div>
               <div className="ml-4">
-                <h4 className="text-lg font-semibold">Unbegrenzte Kreativität</h4>
-                <p className="text-gray-600">Generieren Sie so viele Ideen, bis Sie den perfekten Post gefunden haben. Nie wieder auf einen leeren Bildschirm starren.</p>
+                <h4 className="text-lg font-semibold">KI schreibt Ihre Posts</h4>
+                <p className="text-gray-600">Geben Sie nur Ihr Geschäft und das Thema ein. Unsere KI erstellt sofort einen fertigen Social-Media-Post in Ihrem Stil – locker für Cafés, professionell für Anwälte.</p>
               </div>
             </div>
             <div className="flex items-start">
-              <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-indigo-600 text-white flex items-center justify-center">✓</div>
+              <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-indigo-600 text-white flex items-center justify-center">📸</div>
               <div className="ml-4">
-                <h4 className="text-lg font-semibold">Authentische Tonalität</h4>
-                <p className="text-gray-600">Unsere KI lernt Ihren Stil. Ob locker und witzig oder professionell und informativ – die Posts klingen immer nach Ihnen.</p>
+                <h4 className="text-lg font-semibold">KI gibt Foto-Anweisungen</h4>
+                <p className="text-gray-600">Klicken Sie auf "Bildideen" und erhalten detaillierte Regie-Anweisungen: Was fotografieren, welcher Winkel, welches Licht – alles mit dem Smartphone umsetzbar.</p>
               </div>
             </div>
             <div className="flex items-start">
-              <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-indigo-600 text-white flex items-center justify-center">✓</div>
+              <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-indigo-600 text-white flex items-center justify-center">#</div>
               <div className="ml-4">
-                <h4 className="text-lg font-semibold">Für alle Plattformen</h4>
-                <p className="text-gray-600">Erhalten Sie optimierte Vorschläge für Instagram, Facebook und mehr, inklusive passender Hashtag-Ideen.</p>
+                <h4 className="text-lg font-semibold">KI wählt perfekte Hashtags</h4>
+                <p className="text-gray-600">Automatisch passende Hashtags für Ihren Post und Ihr Geschäft. Keine Recherche nötig – die KI kennt die besten Tags für maximale Reichweite.</p>
               </div>
             </div>
           </div>
@@ -253,32 +253,42 @@ function ContentZauberPricing() {
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">Ein Preis, der sich rechnet.</h2>
         <p className="text-lg text-gray-600 mb-12">Wählen Sie den Plan, der zu Ihnen passt. Jederzeit kündbar.</p>
-        <div className="flex flex-col md:flex-row justify-center gap-8 max-w-4xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-center gap-8 max-w-5xl mx-auto">
           <div className="border border-gray-200 rounded-lg p-8 w-full flex flex-col">
-            <h3 className="text-2xl font-semibold mb-2">Basis</h3>
-            <p className="text-gray-500 mb-6">Für den perfekten Start.</p>
-            <p className="text-4xl font-bold mb-6">€19 <span className="text-lg font-normal text-gray-500">/ Monat</span></p>
+            <h3 className="text-2xl font-semibold mb-2">Starter</h3>
+            <p className="text-gray-500 mb-6">Für den ersten Test.</p>
+            <p className="text-4xl font-bold mb-6">€4,90 <span className="text-lg font-normal text-gray-500">/ Monat</span></p>
             <ul className="text-left space-y-3 mb-8 flex-grow">
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> 20 Post-Generierungen / Monat</li>
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Für Facebook & Instagram</li>
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> KI-Bildideen</li>
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Community-Support</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> 15 Posts pro Monat</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> KI schreibt Posts + Hashtags</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> KI-Bildideen mit Anleitung</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> E-Mail Support</li>
             </ul>
             <a href="#" className="w-full bg-gray-100 text-indigo-600 font-semibold py-3 rounded-lg hover:bg-gray-200 transition-colors text-center block">Plan wählen</a>
           </div>
           <div className="border-2 border-indigo-600 rounded-lg p-8 w-full relative flex flex-col">
-            <span className="absolute top-0 -translate-y-1/2 bg-indigo-600 text-white text-sm font-semibold px-3 py-1 rounded-full">Beliebtester Plan</span>
-            <h3 className="text-2xl font-semibold mb-2">Pro</h3>
-            <p className="text-gray-500 mb-6">Für alle, die wachsen wollen.</p>
-            <p className="text-4xl font-bold mb-6">€49 <span className="text-lg font-normal text-gray-500">/ Monat</span></p>
+            <span className="absolute top-0 -translate-y-1/2 bg-indigo-600 text-white text-sm font-semibold px-3 py-1 rounded-full">Empfohlen</span>
+            <h3 className="text-2xl font-semibold mb-2">Business</h3>
+            <p className="text-gray-500 mb-6">Für regelmäßige Posts.</p>
+            <p className="text-4xl font-bold mb-6">€9,90 <span className="text-lg font-normal text-gray-500">/ Monat</span></p>
             <ul className="text-left space-y-3 mb-8 flex-grow">
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> <strong>Unbegrenzte</strong> Post-Generierungen</li>
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Für alle Plattformen</li>
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> KI-Bildideen</li>
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> <strong>Content-Kalender</strong></li>
-              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> <strong>Premium Support</strong></li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> 50 Posts pro Monat</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Alle KI-Features</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Unbegrenzte Geschäftstypen</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> E-Mail Support</li>
             </ul>
             <a href="#" className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition-colors text-center block">Plan wählen</a>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-8 w-full flex flex-col">
+            <h3 className="text-2xl font-semibold mb-2">Pro</h3>
+            <p className="text-gray-500 mb-6">Für Content-Profis.</p>
+            <p className="text-4xl font-bold mb-6">€19,90 <span className="text-lg font-normal text-gray-500">/ Monat</span></p>
+            <ul className="text-left space-y-3 mb-8 flex-grow">
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> 150 Posts pro Monat</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Alle Features</li>
+              <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Schnellerer E-Mail Support</li>
+            </ul>
+            <a href="#" className="w-full bg-gray-100 text-indigo-600 font-semibold py-3 rounded-lg hover:bg-gray-200 transition-colors text-center block">Plan wählen</a>
           </div>
         </div>
       </div>

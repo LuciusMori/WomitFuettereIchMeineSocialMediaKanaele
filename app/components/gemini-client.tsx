@@ -114,7 +114,25 @@ Sprich die Zielgruppe direkt an und verwende den passenden Tonfall für diesen G
         imageIdeasLoader?.classList.remove('hidden');
         imageIdeasLoader?.classList.add('flex');
 
-        const prompt = `Basierend auf diesem Social-Media-Post: "${postText}", gib mir 3 kreative und einfach umsetzbare Bild- oder Videoideen als Stichpunkte. Die Ideen sollten von einem Kleinunternehmer ohne professionelles Equipment umsetzbar sein.`;
+        const prompt = `Du bist ein Foto-Regisseur für Social Media Content. Basierend auf diesem Post: "${postText}"
+
+Erstelle 3 detaillierte REGIE-ANWEISUNGEN für Bilder/Videos, die ein Kleinunternehmer mit dem Smartphone umsetzen kann:
+
+FORMAT für jede Idee:
+📸 BILD-IDEE [Nummer]: [Kurzer Titel]
+🎬 WAS FOTOGRAFIEREN: [Genaue Beschreibung des Motivs]
+📐 AUFNAHME-WINKEL: [Perspektive, z.B. "Von oben", "Augenhöhe", "Leicht schräg"]
+💡 LICHT-TIPP: [Beleuchtung, z.B. "Natürliches Licht vom Fenster", "Warmes Abendlicht"]
+🎨 STYLING: [Anordnung, Farben, Requisiten]
+📱 SMARTPHONE-TIPP: [Technische Hinweise für bessere Qualität]
+
+Die Ideen sollen:
+- Zum Geschäftstyp und Post-Inhalt passen
+- Mit einfachen Mitteln umsetzbar sein
+- Professionell aussehen
+- Engagement fördern
+
+Geschäftstyp aus Post ableiten und passende Bildideen entwickeln.`;
 
         const generatedIdeas = await callGemini(prompt, generateImagesBtn);
         
