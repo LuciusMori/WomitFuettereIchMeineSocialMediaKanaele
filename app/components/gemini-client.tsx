@@ -4,13 +4,62 @@ import { useEffect } from "react";
 
 export function GeminiClient() {
   useEffect(() => {
-    // Gemini API Helper Function
-    const callGemini = async (prompt: string, button: HTMLButtonElement) => {
+    // Check usage limit before API call
+    const checkUsageLimit = async (type: 'posts' | 'hashtags' | 'imageIdeas') => {
+      try {
+        // Get current user (you'll need to implement this based on your auth system)
+        const userId = getCurrentUserId(); // This function needs to be implemented
+        
+        const response = await fetch('/api/check-usage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, type })
+        });
+        
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        console.error("Error checking usage limit:", error);
+        return { canGenerate: false, reason: "Fehler beim Prüfen der Limits." };
+      }
+    };
+
+    // Increment usage after successful generation
+    const incrementUsage = async (type: 'posts' | 'hashtags' | 'imageIdeas') => {
+      try {
+        const userId = getCurrentUserId();
+        
+        await fetch('/api/increment-usage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, type })
+        });
+      } catch (error) {
+        console.error("Error incrementing usage:", error);
+      }
+    };
+
+    // Get current user ID (implement based on your auth system)
+    const getCurrentUserId = () => {
+      // This is a placeholder - implement based on your authentication
+      // For example, if using Clerk: return user?.id
+      return "user_placeholder"; // Replace with actual implementation
+    };
+
+    // Gemini API Helper Function with usage checking
+    const callGemini = async (prompt: string, button: HTMLButtonElement, usageType: 'posts' | 'hashtags' | 'imageIdeas') => {
       const originalButtonContent = button.innerHTML;
       button.disabled = true;
       button.innerHTML = `<div class="loader mx-auto border-4 border-gray-300 border-t-indigo-600 rounded-full w-6 h-6 animate-spin"></div>`;
 
       try {
+        // Check usage limit first
+        const usageCheck = await checkUsageLimit(usageType);
+        
+        if (!usageCheck.canGenerate) {
+          return `❌ ${usageCheck.reason}\n\n💡 Tipp: Sie können zusätzliche Tokens kaufen oder auf den nächsten Monat warten.\n\nVerbleibende Tokens: ${usageCheck.remainingTokens || 0}`;
+        }
+
         const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
         const apiKey = ""; // Leave empty for now
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
@@ -25,6 +74,8 @@ export function GeminiClient() {
         
         const result = await response.json();
         if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+          // Increment usage counter after successful generation
+          await incrementUsage(usageType);
           return result.candidates[0].content.parts[0].text;
         } else {
           return "Entschuldigung, es gab ein Problem bei der Generierung.";
@@ -88,7 +139,7 @@ Thema: "${postTopic}"
 
 Sprich die Zielgruppe direkt an und verwende den passenden Tonfall für diesen Geschäftstyp.`;
         
-        const generatedPost = await callGemini(prompt, generatePostBtn);
+        const generatedPost = await callGemini(prompt, generatePostBtn, 'posts');
         
         postLoader?.classList.add('hidden');
         postLoader?.classList.remove('flex');
@@ -134,7 +185,7 @@ Die Ideen sollen:
 
 Geschäftstyp aus Post ableiten und passende Bildideen entwickeln.`;
 
-        const generatedIdeas = await callGemini(prompt, generateImagesBtn);
+        const generatedIdeas = await callGemini(prompt, generateImagesBtn, 'imageIdeas');
         
         imageIdeasLoader?.classList.add('hidden');
         imageIdeasLoader?.classList.remove('flex');
@@ -162,7 +213,7 @@ Geschäftstyp aus Post ableiten und passende Bildideen entwickeln.`;
 
         const prompt = `Gib mir 5-7 relevante und effektive Hashtags (nur die Hashtags, mit # am Anfang, durch Leerzeichen getrennt) für diesen Social-Media-Post für ein/e ${businessType}: "${postText}"`;
 
-        const generatedHashtags = await callGemini(prompt, generateHashtagsBtn);
+        const generatedHashtags = await callGemini(prompt, generateHashtagsBtn, 'hashtags');
         
         hashtagsLoader?.classList.add('hidden');
         hashtagsLoader?.classList.remove('flex');

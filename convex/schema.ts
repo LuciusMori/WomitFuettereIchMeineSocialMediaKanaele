@@ -40,4 +40,15 @@ export default defineSchema({
   })
     .index("type", ["type"])
     .index("polarEventId", ["polarEventId"]),
+  usage: defineTable({
+    userId: v.string(),
+    month: v.string(), // Format: "2025-01" 
+    postsGenerated: v.number(),
+    hashtagsGenerated: v.number(),
+    imageIdeasGenerated: v.number(),
+    extraTokensPurchased: v.number(),
+    lastUpdated: v.number(),
+  })
+    .index("userId", ["userId"])
+    .index("userMonth", ["userId", "month"]),
 });
