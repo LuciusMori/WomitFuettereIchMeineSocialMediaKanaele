@@ -66,7 +66,27 @@ export function GeminiClient() {
         postLoader?.classList.remove('hidden');
         postLoader?.classList.add('flex');
 
-        const prompt = `Du bist ein Social-Media-Experte für lokale Geschäfte in der DACH-Region. Erstelle einen kurzen, ansprechenden und authentischen Social-Media-Post (ca. 4-5 Sätze) für ein/e ${businessType}. Das Thema ist: "${postTopic}". Sprich die Kunden direkt und freundlich an. Füge auch passende Emojis hinzu.`;
+        const prompt = `Du bist ein Social-Media-Experte für lokale Geschäfte in der DACH-Region. 
+
+WICHTIG: Analysiere zuerst den Geschäftstyp "${businessType}" und das Thema "${postTopic}" um den passenden Tonfall zu bestimmen:
+
+TONALITÄT-ANALYSE:
+- Für Cafés, Restaurants, Bäckereien: Locker, herzlich, einladend
+- Für Anwaltskanzleien, Steuerberater, Ärzte: Professionell, vertrauensvoll, seriös  
+- Für Friseure, Beauty-Salons, Mode: Trendig, inspirierend, lifestyle-orientiert
+- Für Handwerker, Autowerkstätten: Bodenständig, kompetent, zuverlässig
+- Für Fitness-Studios, Yoga: Motivierend, energisch, gesundheitsbewusst
+
+STIL-ANPASSUNG basierend auf Geschäftstyp:
+1. LOCKER & WITZIG: Verwende umgangssprachliche Ausdrücke, Wortspiele, lockere Ansprache ("Hey", "Schaut mal"), mehr Emojis
+2. PROFESSIONELL & INFORMATIV: Höfliche Sie-Form, sachliche Informationen, weniger Emojis, vertrauensvolle Sprache
+
+Erstelle einen authentischen Social-Media-Post (4-5 Sätze) der GENAU zum Geschäftstyp passt. Der Post soll so klingen, als hätte ihn der Geschäftsinhaber selbst geschrieben - nicht wie generische KI-Texte.
+
+Geschäftstyp: ${businessType}
+Thema: "${postTopic}"
+
+Sprich die Zielgruppe direkt an und verwende den passenden Tonfall für diesen Geschäftstyp.`;
         
         const generatedPost = await callGemini(prompt, generatePostBtn);
         

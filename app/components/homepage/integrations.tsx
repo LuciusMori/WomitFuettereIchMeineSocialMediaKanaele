@@ -66,7 +66,7 @@ export default function IntegrationsSection({
                 
                 <p className="text-xl text-slate-300 mb-8 leading-relaxed">
                   Während andere noch überlegen, was sie posten sollen, haben Sie bereits 
-                  drei perfekte Posts erstellt. Für Ihr Café, Ihren Salon, Ihre Praxis.
+                  drei perfekte Posts erstellt. Für Ihr Café, Ihren Salon, Ihre Praxis...
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">

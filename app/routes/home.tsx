@@ -209,7 +209,7 @@ function FeaturesSection() {
             </div>
           </div>
           <div>
-            <img src="https://placehold.co/600x450/eef2ff/6366f1?text=Feature-Illustration" alt="Illustration von Social-Media-Posts" className="rounded-lg shadow-xl" />
+            <img src="/Feature-Illustration.png" alt="Illustration von Social-Media-Posts" className="rounded-lg shadow-xl max-w-md w-full h-auto" />
           </div>
         </div>
       </div>
