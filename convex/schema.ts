@@ -46,6 +46,8 @@ export default defineSchema({
     postsGenerated: v.number(),
     hashtagsGenerated: v.number(),
     imageIdeasGenerated: v.number(),
+    imagesGenerated: v.number(),
+    videosGenerated: v.number(),
     extraTokensPurchased: v.number(),
     lastUpdated: v.number(),
   })

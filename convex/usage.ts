@@ -3,9 +3,9 @@ import { v } from "convex/values";
 
 // Plan limits configuration
 const PLAN_LIMITS = {
-  starter: { posts: 15, hashtags: 15, imageIdeas: 15 },
-  business: { posts: 50, hashtags: 50, imageIdeas: 50 },
-  pro: { posts: 150, hashtags: 150, imageIdeas: 150 },
+  starter: { posts: 15, hashtags: 15, imageIdeas: 15, images: 5, videos: 2 },
+  business: { posts: 50, hashtags: 50, imageIdeas: 50, images: 20, videos: 10 },
+  pro: { posts: 150, hashtags: 150, imageIdeas: 150, images: 75, videos: 30 },
 };
 
 // Get current month string (YYYY-MM format)
@@ -39,7 +39,7 @@ const getUserPlan = async (ctx: any, userId: string) => {
 export const checkUsageLimit = query({
   args: { 
     userId: v.string(),
-    type: v.union(v.literal("posts"), v.literal("hashtags"), v.literal("imageIdeas"))
+    type: v.union(v.literal("posts"), v.literal("hashtags"), v.literal("imageIdeas"), v.literal("images"), v.literal("videos"))
   },
   handler: async (ctx, args) => {
     const currentMonth = getCurrentMonth();
@@ -66,10 +66,21 @@ export const checkUsageLimit = query({
     const totalLimit = planLimit + extraTokens;
     const remainingTokens = Math.max(0, totalLimit - currentUsage);
     
+    const getTypeDisplayName = (type: string) => {
+      switch(type) {
+        case 'posts': return 'Post';
+        case 'hashtags': return 'Hashtag';
+        case 'imageIdeas': return 'Bildideen';
+        case 'images': return 'Bild';
+        case 'videos': return 'Video';
+        default: return type;
+      }
+    };
+
     return {
       canGenerate: currentUsage < totalLimit,
       reason: currentUsage >= totalLimit 
-        ? `Ihr ${args.type === 'posts' ? 'Post' : args.type === 'hashtags' ? 'Hashtag' : 'Bildideen'}-Kontingent für diesen Monat ist aufgebraucht. Sie können zusätzliche Tokens kaufen oder auf den nächsten Monat warten.`
+        ? `Ihr ${getTypeDisplayName(args.type)}-Kontingent für diesen Monat ist aufgebraucht. Sie können zusätzliche Tokens kaufen oder auf den nächsten Monat warten.`
         : "",
       remainingTokens,
       totalTokens: totalLimit,
@@ -82,7 +93,7 @@ export const checkUsageLimit = query({
 export const incrementUsage = mutation({
   args: { 
     userId: v.string(),
-    type: v.union(v.literal("posts"), v.literal("hashtags"), v.literal("imageIdeas"))
+    type: v.union(v.literal("posts"), v.literal("hashtags"), v.literal("imageIdeas"), v.literal("images"), v.literal("videos"))
   },
   handler: async (ctx, args) => {
     const currentMonth = getCurrentMonth();
@@ -108,6 +119,8 @@ export const incrementUsage = mutation({
         postsGenerated: args.type === "posts" ? 1 : 0,
         hashtagsGenerated: args.type === "hashtags" ? 1 : 0,
         imageIdeasGenerated: args.type === "imageIdeas" ? 1 : 0,
+        imagesGenerated: args.type === "images" ? 1 : 0,
+        videosGenerated: args.type === "videos" ? 1 : 0,
         extraTokensPurchased: 0,
         lastUpdated: Date.now(),
       });
@@ -135,6 +148,8 @@ export const getUserUsage = query({
       posts: usage?.postsGenerated || 0,
       hashtags: usage?.hashtagsGenerated || 0,
       imageIdeas: usage?.imageIdeasGenerated || 0,
+      images: usage?.imagesGenerated || 0,
+      videos: usage?.videosGenerated || 0,
       extraTokens: usage?.extraTokensPurchased || 0,
     };
     
@@ -148,11 +163,15 @@ export const getUserUsage = query({
         posts: limits.posts + currentUsage.extraTokens,
         hashtags: limits.hashtags + currentUsage.extraTokens,
         imageIdeas: limits.imageIdeas + currentUsage.extraTokens,
+        images: limits.images + currentUsage.extraTokens,
+        videos: limits.videos + currentUsage.extraTokens,
       },
       remaining: {
         posts: Math.max(0, limits.posts + currentUsage.extraTokens - currentUsage.posts),
         hashtags: Math.max(0, limits.hashtags + currentUsage.extraTokens - currentUsage.hashtags),
         imageIdeas: Math.max(0, limits.imageIdeas + currentUsage.extraTokens - currentUsage.imageIdeas),
+        images: Math.max(0, limits.images + currentUsage.extraTokens - currentUsage.images),
+        videos: Math.max(0, limits.videos + currentUsage.extraTokens - currentUsage.videos),
       }
     };
   },
@@ -185,6 +204,8 @@ export const purchaseExtraTokens = mutation({
         postsGenerated: 0,
         hashtagsGenerated: 0,
         imageIdeasGenerated: 0,
+        imagesGenerated: 0,
+        videosGenerated: 0,
         extraTokensPurchased: args.tokenCount,
         lastUpdated: Date.now(),
       });
