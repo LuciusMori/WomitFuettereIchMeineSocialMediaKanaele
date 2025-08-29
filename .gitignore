@@ -6,3 +6,7 @@
 /build/
 
 .env.local
+
+# Credentials - NEVER commit these!
+/credentials/*.json
+/credentials/*.key

@@ -36,62 +36,55 @@ export function AIContentGenerator() {
       return;
     }
 
+    if ((type === 'hashtags' || type === 'imageIdeas') && !content.post) {
+      alert('Generieren Sie zuerst einen Post.');
+      return;
+    }
+
     setLoading(prev => ({ ...prev, [type]: true }));
 
     try {
-      let endpoint = '';
-      let payload: any = {
-        userId: getCurrentUserId(),
-        businessType,
-        postTopic
-      };
+      // Import AI Service dynamisch
+      const { AIService } = await import('../lib/ai-service');
+      const aiService = new AIService();
+
+      let result = '';
 
       switch (type) {
         case 'post':
-          endpoint = '/api/generate-post';
-          payload.prompt = createPostPrompt(businessType, postTopic);
+          result = await aiService.generatePost(businessType, postTopic);
           break;
         case 'hashtags':
-          endpoint = '/api/generate-hashtags';
-          payload.postContent = content.post;
+          result = await aiService.generateHashtags(businessType, content.post!);
           break;
         case 'imageIdeas':
-          endpoint = '/api/generate-image-ideas';
-          payload.postContent = content.post;
+          result = await aiService.generateImageIdeas(content.post!);
           break;
         case 'image':
-          endpoint = '/api/generate-image';
-          payload.prompt = `Erstelle ein professionelles Social Media Bild für: ${postTopic}`;
-          payload.postContent = content.post;
+          result = await aiService.generateImage(
+            `Erstelle ein professionelles Social Media Bild für: ${postTopic}`,
+            businessType,
+            content.post || postTopic
+          );
           break;
         case 'video':
-          endpoint = '/api/generate-video';
-          payload.prompt = `Erstelle ein kurzes, ansprechendes Social Media Video für: ${postTopic}`;
-          payload.postContent = content.post;
-          payload.videoType = 'text-to-video';
+          result = await aiService.generateVideo(
+            `Erstelle ein kurzes, ansprechendes Social Media Video für: ${postTopic}`,
+            businessType,
+            content.post || postTopic
+          );
           break;
       }
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      setContent(prev => ({
+        ...prev,
+        [type === 'post' ? 'post' : 
+         type === 'hashtags' ? 'hashtags' :
+         type === 'imageIdeas' ? 'imageIdeas' :
+         type === 'image' ? 'generatedImage' :
+         'generatedVideo']: result
+      }));
 
-      const result = await response.json();
-
-      if (result.success) {
-        setContent(prev => ({
-          ...prev,
-          [type === 'post' ? 'post' : 
-           type === 'hashtags' ? 'hashtags' :
-           type === 'imageIdeas' ? 'imageIdeas' :
-           type === 'image' ? 'generatedImage' :
-           'generatedVideo']: result.content || result.imageUrl || result.videoUrl
-        }));
-      } else {
-        alert(result.error || 'Ein Fehler ist aufgetreten');
-      }
     } catch (error) {
       console.error(`Error generating ${type}:`, error);
       alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
